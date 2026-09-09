@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data
+data/raw/
+data/processed/
+*.tif
+*.tiff
+*.jp2
+*.h5
+*.hdf5
+
+# ML artifacts
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.safetensors
+
+# Outputs
+outputs/
+runs/
+logs/
+artifacts/
+index/
+
+# Frontend
+node_modules/
+dist/
+.next/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

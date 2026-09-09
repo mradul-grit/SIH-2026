@@ -1,0 +1,7 @@
+# Put the actual GitHub usernames here before enabling CODEOWNERS rules.
+# Example:
+# /src/data/ @member2
+# /src/embeddings/ @member3
+# /src/change_detection/ @member4
+# /backend/ @member5
+# /frontend/ @member6

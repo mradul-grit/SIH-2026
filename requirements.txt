@@ -1,0 +1,20 @@
+# Pin exact versions before the first reproducible build.
+# Geospatial / scientific
+numpy
+pandas
+rasterio
+geopandas
+shapely
+pyproj
+
+# ML
+torch
+transformers
+scikit-learn
+
+# API
+fastapi
+uvicorn
+
+# Testing
+pytest
