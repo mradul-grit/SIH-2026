@@ -295,9 +295,4 @@ API_PORT=8000                      # FastAPI bind port
 
 ---
 
-## Team
 
-| Name | Role |
-| :--- | :--- |
-| Mradul | Technical Lead, ML Architecture |
-| Mayank Soni | Backend & Infrastructure, System Integration |
