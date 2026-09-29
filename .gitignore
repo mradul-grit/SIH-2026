@@ -1,14 +1,22 @@
 # Python
 __pycache__/
 *.py[cod]
+*.pyo
+*.pyd
+.Python
 .venv/
 venv/
 .env
+*.egg-info/
+dist/
+build/
 
 # Jupyter
 .ipynb_checkpoints/
+*.ipynb
 
-# Data
+# Data — raw satellite rasters (large binary, licensed datasets)
+datasets/
 data/raw/
 data/processed/
 *.tif
@@ -16,28 +24,41 @@ data/processed/
 *.jp2
 *.h5
 *.hdf5
+*.png.bak
+*.geojson.bak
 
-# ML artifacts
+# ML artifacts — model weights (use Git LFS or external artifact store)
 *.pt
 *.pth
 *.ckpt
 *.onnx
 *.safetensors
+experiments/unified_5datasets_cbam/model.pt
+experiments/levir_baseline/model.pt
 
-# Outputs
-outputs/
-runs/
+# Database & vector stores
+database/
+experiments/vector_store/*.bin
 logs/
-artifacts/
-index/
 
-# Frontend
-node_modules/
-dist/
-.next/
+# Frontend build artifacts
+frontend/node_modules/
+frontend/dist/
+frontend/.next/
 
-# OS/editor
+# OS / Editor
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
+*.swp
+*.swo
+
+# Scratch / local backups
+scratch/
+README.local.md
+frontend/README.local.md
+requirements.local.txt
+
+# Evaluation output (regeneratable)
+evaluation_report.html

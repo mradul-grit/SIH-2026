@@ -1,0 +1,7 @@
+model_name,params_m,model_size_mb,peak_vram_mb,latency_256_ms,latency_512_ms,f1,iou,precision,recall,fpr,fnr,accuracy,hardware
+"Siamese U-Net + ResNet-18 (Base)",14.32,57.28,680.0,11.2,29.4,0.865,0.762,0.891,0.841,0.052,0.159,0.958,"CUDA (NVIDIA GeForce RTX 3050 Laptop GPU)"
+"Siamese U-Net + ResNet-18 + CBAM",14.72,58.88,720.0,12.8,33.1,0.884,0.792,0.908,0.862,0.048,0.138,0.967,"CUDA (NVIDIA GeForce RTX 3050 Laptop GPU)"
+"Siamese U-Net + ResNet-18 + Multi-Task Head",14.91,59.64,740.0,13.4,34.5,0.880,0.788,0.902,0.859,0.050,0.141,0.964,"CUDA (NVIDIA GeForce RTX 3050 Laptop GPU)"
+"Lightweight ChangeFormer (Benchmark)",8.92,35.68,1150.0,38.6,112.4,0.858,0.751,0.874,0.843,0.061,0.157,0.951,"CUDA (NVIDIA GeForce RTX 3050 Laptop GPU)"
+"Siamese ResNet-18 + CBAM (Unified 5-Dataset 24.82GB)",14.72,58.88,785.0,21.4,48.2,0.747,0.596,0.722,0.774,0.020,0.226,0.978,"CUDA (NVIDIA GeForce RTX 3050 Laptop GPU)"
+

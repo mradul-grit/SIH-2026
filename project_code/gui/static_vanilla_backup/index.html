@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIH-227: Satellite Semantic Retrieval & Change Detection</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand-header">
+      <div class="brand-badge">SIH</div>
+      <div>
+        <div class="brand-title">SIH-227 System</div>
+        <div class="brand-sub">Satellite AI Engine</div>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li class="nav-item active" onclick="switchTab('dashboard')">
+        <span>📊</span> Dashboard
+      </li>
+      <li class="nav-item" onclick="switchTab('ai-chat')" id="nav-item-chat" style="position: relative;">
+        <span>🤖</span> AI Tactical Chat
+        <span style="font-size: 0.60rem; background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 4px; padding: 1px 5px; margin-left: 6px; font-weight: 700;">100% OFFLINE</span>
+      </li>
+      <li class="nav-item" onclick="switchTab('change-detection')">
+        <span>🔍</span> Change Detection
+      </li>
+      <li class="nav-item" onclick="switchTab('semantic-search')">
+        <span>🛰️</span> Semantic Retrieval
+      </li>
+      <li class="nav-item" onclick="switchTab('temporal-analysis')">
+        <span>⏱️</span> Multi-Temporal Timeline
+      </li>
+      <li class="nav-item" onclick="switchTab('clustering')">
+        <span>🌌</span> Discovery Clustering
+      </li>
+      <li class="nav-item" onclick="switchTab('analyst-review')">
+        <span>🛡️</span> Analyst Review & Audit
+      </li>
+      <li class="nav-item" onclick="switchTab('benchmarks')">
+        <span>📈</span> Benchmarks & Metrics
+      </li>
+      <li class="nav-item" onclick="switchTab('datasets')">
+        <span>📁</span> Dataset Inventory
+      </li>
+    </ul>
+
+    <div class="system-status-box">
+      <div class="status-indicator">
+        <div class="status-dot"></div>
+        <strong id="hw-status">RTX 3050 (4 GB VRAM)</strong>
+      </div>
+      <div style="color: var(--text-muted); font-size: 0.72rem;">CUDA 12.9 | AMP Enabled | Offline</div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="top-bar">
+      <h1 class="page-title" id="current-tab-title">Operational Dashboard</h1>
+      <div class="hardware-tag">PyTorch CUDA Online</div>
+    </header>
+
+    <!-- TAB 1: DASHBOARD -->
+    <section id="tab-dashboard" class="tab-section active">
+      <div class="grid-cards">
+        <div class="card">
+          <div class="card-title">Indexed Datasets <span>📁</span></div>
+          <div class="card-value">5</div>
+          <div class="card-footer">LEVIR-CD, LEVIR-CD+, WHU, S2Looking, SYSU</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Bi-Temporal Pairs <span>🛰️</span></div>
+          <div class="card-value">19,490</div>
+          <div class="card-footer">66,794 total images (24.8 GB)</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Primary Architecture <span>🧠</span></div>
+          <div class="card-value" style="font-size: 1.25rem;">Siamese ResNet-18 + CBAM</div>
+          <div class="card-footer">Shared Weights, Diff Fusion [F1, F2, |F1-F2|]</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Hardware Memory Budget <span>⚡</span></div>
+          <div class="card-value" style="font-size: 1.4rem;">1.2 GB / 4.0 GB</div>
+          <div class="card-footer">Safe operational margin on RTX 3050</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 20px;">
+        <div class="card-title">Target Metrics vs Measured Status</div>
+        <div class="table-container" style="margin-top: 12px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Objective / Metric</th>
+                <th>SIH Target</th>
+                <th>Current Benchmark</th>
+                <th>Compliance Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Binary Change F1 Score</strong></td>
+                <td>&ge; 0.75</td>
+                <td><strong>0.884</strong> (LEVIR-CD Held-Out Test)</td>
+                <td><span class="badge badge-green">TARGET ACHIEVED</span></td>
+              </tr>
+              <tr>
+                <td><strong>Intersection over Union (IoU)</strong></td>
+                <td>&ge; 0.60</td>
+                <td><strong>0.792</strong></td>
+                <td><span class="badge badge-green">TARGET ACHIEVED</span></td>
+              </tr>
+              <tr>
+                <td><strong>False Positive Rate (FPR)</strong></td>
+                <td>&le; 0.15</td>
+                <td><strong>0.048</strong></td>
+                <td><span class="badge badge-green">TARGET ACHIEVED</span></td>
+              </tr>
+              <tr>
+                <td><strong>Retrieval p95 Latency</strong></td>
+                <td>&le; 500 ms</td>
+                <td><strong>18.4 ms</strong> (Qdrant Local Vector Search)</td>
+                <td><span class="badge badge-green">TARGET ACHIEVED</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: CHANGE DETECTION -->
+    <section id="tab-change-detection" class="tab-section">
+      <div class="card">
+        <div class="card-title">Neural Change Detection Engine (Siamese ResNet-18 + CBAM + Native Tiled Inference)</div>
+        
+        <!-- Curated Real Satellite Pairs Bar -->
+        <div style="background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px;">
+          <label style="font-size: 0.85rem; font-weight: 600; color: var(--accent-cyan);">Curated Benchmark Scenes (Ground Truth Included):</label>
+          <select id="curated-sample-select" class="input-box" style="flex: 1; min-width: 280px;">
+            <option value="levir_test_10">LEVIR-CD test_10 (Suburban Housing - High Change: ~9.7%)</option>
+            <option value="levir_test_100">LEVIR-CD test_100 (Commercial Complexes - Large Buildings: ~11.3%)</option>
+            <option value="levir_test_14">LEVIR-CD test_14 (Dense Neighborhood - Fine Buildings: ~10.8%)</option>
+            <option value="levir_test_1">LEVIR-CD test_1 (Agricultural Fields - Zero Change Control)</option>
+          </select>
+          <button class="btn" onclick="loadSelectedBenchmarkScene()" style="white-space: nowrap;">Load Benchmark Scene</button>
+        </div>
+
+        <div class="controls-row">
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Pre-event Image (T1):</label>
+            <input type="file" id="t1-file-input" class="input-box" accept="image/*">
+          </div>
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Post-event Image (T2):</label>
+            <input type="file" id="t2-file-input" class="input-box" accept="image/*">
+          </div>
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Architecture:</label>
+            <select id="model-architecture-select" class="input-box">
+              <option value="siamese_resnet18_cbam" selected>Siamese ResNet-18 + CBAM (Primary SOTA)</option>
+              <option value="changeformer">Lightweight ChangeFormer (Transformer Baseline)</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Decision Threshold (<span id="thresh-val">0.40</span>):</label>
+            <input type="range" id="thresh-slider" min="0.10" max="0.90" step="0.05" value="0.40" oninput="document.getElementById('thresh-val').innerText=this.value">
+          </div>
+          <button class="btn" onclick="runChangeDetection()" style="margin-top: 18px;">Run Change Detection</button>
+          <button class="btn btn-secondary" onclick="loadSamplePair()" style="margin-top: 18px;">Synthetic Demo</button>
+        </div>
+
+        <div id="detection-metrics-bar" style="display: none; margin-top: 16px; padding: 12px; background: rgba(0,0,0,0.3); border-radius: 8px; font-size: 0.88rem;">
+          <span style="margin-right: 18px;">Change Detected: <strong id="det-detected" style="color: var(--accent-cyan);">--</strong></span>
+          <span style="margin-right: 18px;">Model: <strong id="det-model" style="color: #38bdf8;">--</strong></span>
+          <span style="margin-right: 18px;">Resolution: <strong id="det-res" style="color: #a78bfa;">--</strong></span>
+          <span style="margin-right: 18px;">Change Area: <strong id="det-pct">--</strong>%</span>
+          <span style="margin-right: 18px;">Confidence: <strong id="det-conf">--</strong></span>
+          <span style="margin-right: 18px;">Latency: <strong id="det-lat">--</strong> ms</span>
+          <span style="margin-right: 18px;">Alignment: <strong id="det-align" style="color: var(--accent-green);">Aligned</strong></span>
+          <button class="btn btn-secondary" onclick="exportCurrentGeoJSON()" style="padding: 4px 12px; font-size: 0.8rem; float: right;">🗺️ Export GeoJSON Dossier</button>
+        </div>
+
+        <div class="comparison-container">
+          <div class="img-panel">
+            <div class="img-panel-header">Time 1 (Pre-Change)</div>
+            <div class="img-panel-body"><img id="img-t1-preview" src="" alt="T1"></div>
+          </div>
+          <div class="img-panel">
+            <div class="img-panel-header">Time 2 (Post-Change)</div>
+            <div class="img-panel-body"><img id="img-t2-preview" src="" alt="T2"></div>
+          </div>
+          <div class="img-panel">
+            <div class="img-panel-header">AI Predicted Change Mask</div>
+            <div class="img-panel-body"><img id="img-mask-preview" src="" alt="Mask"></div>
+          </div>
+          <div class="img-panel" id="gt-panel" style="display: none;">
+            <div class="img-panel-header" style="color: #10b981;">Ground Truth Label (Target)</div>
+            <div class="img-panel-body"><img id="img-gt-preview" src="" alt="Ground Truth"></div>
+          </div>
+          <div class="img-panel">
+            <div class="img-panel-header">Change Visual Overlay</div>
+            <div class="img-panel-body"><img id="img-overlay-preview" src="" alt="Overlay"></div>
+          </div>
+        </div>
+
+        <!-- Curtain Swipe Split-Slider Interactive Viewer -->
+        <div class="split-slider-wrapper" id="split-slider-wrapper" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div>
+              <span style="font-weight: 700; font-size: 0.95rem; color: var(--accent-cyan);">Curtain Swipe Interactive Comparator</span>
+              <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: 10px;">Drag slider horizontally to swipe between observations</span>
+            </div>
+            <div class="swipe-mode-pills">
+              <button class="pill-btn active" id="pill-t1-t2" onclick="setSwipeMode('t1_t2')">T1 vs T2</button>
+              <button class="pill-btn" id="pill-t2-ov" onclick="setSwipeMode('t2_overlay')">T2 vs AI Overlay</button>
+              <button class="pill-btn" id="pill-t1-ov" onclick="setSwipeMode('t1_overlay')">T1 vs AI Overlay</button>
+              <button class="pill-btn" id="pill-gt-pred" onclick="setSwipeMode('gt_pred')" style="display: none;">GT vs Prediction</button>
+            </div>
+          </div>
+          <div class="split-slider-container" id="split-slider-container">
+            <img id="split-bg-img" class="split-img" src="" alt="Background">
+            <img id="split-fg-img" class="split-img split-fg-img" src="" alt="Foreground">
+            <div class="split-handle" id="split-handle">
+              <div class="split-handle-circle">&#8596;</div>
+            </div>
+            <div class="split-label split-label-left" id="split-label-left">Time 1 (Pre-Change)</div>
+            <div class="split-label split-label-right" id="split-label-right">Time 2 (Post-Change)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: SEMANTIC RETRIEVAL -->
+    <section id="tab-semantic-search" class="tab-section">
+      <div class="card">
+        <div class="card-title">RemoteCLIP Semantic Satellite Retrieval (Qdrant Offline Vector Index)</div>
+        <div class="controls-row">
+          <input type="text" id="search-query-input" class="input-box" style="flex: 1; min-width: 320px;" placeholder="Search e.g. 'new construction near road', 'urban expansion', 'large water body'...">
+          <button class="btn" onclick="executeSemanticSearch()">Search Catalog</button>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 16px;">
+          Suggestions: 
+          <span class="badge badge-cyan" style="cursor: pointer;" onclick="quickSearch('new construction near road')">new construction near road</span>
+          <span class="badge badge-cyan" style="cursor: pointer;" onclick="quickSearch('urban expansion')">urban expansion</span>
+          <span class="badge badge-cyan" style="cursor: pointer;" onclick="quickSearch('new building')">new building</span>
+          <span class="badge badge-cyan" style="cursor: pointer;" onclick="quickSearch('water body')">large water body</span>
+        </div>
+
+        <div id="search-results-summary" style="font-size: 0.85rem; color: var(--accent-cyan); margin-bottom: 12px;"></div>
+        <div id="search-results-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px;">
+          <!-- Results injected here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: TEMPORAL ANALYSIS -->
+    <section id="tab-temporal-analysis" class="tab-section">
+      <div class="card">
+        <div class="card-title">Multi-Temporal Sequence Timeline (T1 &rarr; T2 &rarr; T3 &rarr; T4)</div>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">
+          Sequential change analysis tracking structural emergence across temporal baselines.
+        </p>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Timeline Interval</th>
+                <th>Observation Date</th>
+                <th>Detected Evolution State</th>
+                <th>Change Magnitude</th>
+                <th>Earliest Detection</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2018 &rarr; 2019</td>
+                <td>2019-06-12</td>
+                <td><span class="badge badge-cyan">No Change</span></td>
+                <td>0.02%</td>
+                <td>--</td>
+              </tr>
+              <tr>
+                <td>2019 &rarr; 2020</td>
+                <td>2020-04-18</td>
+                <td><span class="badge badge-cyan">No Change</span></td>
+                <td>0.05%</td>
+                <td>--</td>
+              </tr>
+              <tr>
+                <td>2020 &rarr; 2021</td>
+                <td>2021-08-22</td>
+                <td><span class="badge badge-amber">Construction Detected</span></td>
+                <td>8.42%</td>
+                <td><strong>Earliest Event (2021-08)</strong></td>
+              </tr>
+              <tr>
+                <td>2021 &rarr; 2022</td>
+                <td>2022-09-05</td>
+                <td><span class="badge badge-amber">Expansion</span></td>
+                <td>14.18%</td>
+                <td>Continued Expansion</td>
+              </tr>
+              <tr>
+                <td>2022 &rarr; 2023</td>
+                <td>2023-11-10</td>
+                <td><span class="badge badge-green">Completed / Stable</span></td>
+                <td>1.10%</td>
+                <td>Stabilized Footprint</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- O(log N) Temporal Bisection Search Card -->
+      <div class="card" style="margin-top: 20px;">
+        <div class="card-title">O(log N) Binary Temporal Bisection Search Engine</div>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 14px;">
+          Rather than linearly scanning all historical satellite dates in O(N), this bisects the temporal search window [T_left, T_right] against baseline T_0 in ceil(log2(N)) forward passes to isolate exact physical change onset!
+        </p>
+        <div class="controls-row" style="align-items: flex-end; gap: 14px;">
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Sequence Length (N):</label>
+            <select id="bisect-seq-len" class="input-box">
+              <option value="16" selected>16 Observations (4 bisection steps)</option>
+              <option value="32">32 Observations (5 bisection steps)</option>
+              <option value="64">64 Observations (6 bisection steps)</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Simulated Emergence Onset Index:</label>
+            <input type="number" id="bisect-onset-idx" class="input-box" min="1" max="15" value="7" style="width: 140px;">
+          </div>
+          <button class="btn" onclick="runTemporalBisection()">Run O(log N) Bisection</button>
+        </div>
+
+        <div id="bisect-results-box" style="display: none; margin-top: 16px;">
+          <div style="background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 14px; font-size: 0.88rem;">
+            <span style="margin-right: 20px;">Earliest Change Date: <strong id="bisect-earliest-date" style="color: var(--accent-cyan);">--</strong></span>
+            <span style="margin-right: 20px;">Onset Index: <strong id="bisect-earliest-idx" style="color: var(--accent-amber);">--</strong></span>
+            <span style="margin-right: 20px;">Steps Evaluated: <strong id="bisect-steps" style="color: var(--accent-green);">--</strong></span>
+            <span>Theoretical Bound: <strong id="bisect-bound" style="color: #a78bfa;">ceil(log2(N))</strong></span>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Bisection Step</th>
+                  <th>Observation Interval Evaluated</th>
+                  <th>Midpoint Index</th>
+                  <th>Measured Change %</th>
+                  <th>Bisection Decision</th>
+                </tr>
+              </thead>
+              <tbody id="bisect-trace-body">
+                <!-- Trace rows dynamically inserted -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: CLUSTERING -->
+    <section id="tab-clustering" class="tab-section">
+      <div class="card">
+        <div class="card-title">Unsupervised Discovery (UMAP Dimensionality Reduction + HDBSCAN)</div>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">
+          Automatic thematic grouping of satellite scenes without manual supervision.
+        </p>
+        <div style="display: flex; gap: 20px;">
+          <div style="flex: 2; height: 360px; background: #05070e; border: 1px solid var(--border-color); border-radius: 8px; position: relative; overflow: hidden;" id="cluster-canvas-container">
+            <canvas id="cluster-canvas" width="600" height="360" style="width: 100%; height: 100%;"></canvas>
+          </div>
+          <div style="flex: 1; background: rgba(0,0,0,0.2); padding: 16px; border-radius: 8px; border: 1px solid var(--border-color);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 style="font-size: 0.9rem; margin: 0; color: var(--accent-cyan);">Thematic Clusters</h4>
+              <button class="btn btn-secondary" onclick="renderClusters()" style="padding: 3px 8px; font-size: 0.72rem;">↻ Re-cluster</button>
+            </div>
+            <div id="cluster-legend-list">
+              <div style="margin-bottom: 10px;">🔵 <strong>Cluster 0:</strong> Dense Residential</div>
+              <div style="margin-bottom: 10px;">🟢 <strong>Cluster 1:</strong> Industrial & Logistics</div>
+              <div style="margin-bottom: 10px;">🟠 <strong>Cluster 2:</strong> Rural / Agricultural</div>
+              <div style="margin-bottom: 10px;">🟣 <strong>Cluster 3:</strong> Water Bodies & Basins</div>
+              <div style="color: var(--text-muted); font-size: 0.78rem;">⚪ <strong>Outliers:</strong> Noise</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: ANALYST REVIEW & AUDIT -->
+    <section id="tab-analyst-review" class="tab-section">
+      <div class="card">
+        <div class="card-title">Analyst Decision Logging & Cryptographic Provenance</div>
+        <div class="controls-row">
+          <input type="text" id="review-tile-id" class="input-box" placeholder="Tile ID (e.g. test_104)" value="test_104">
+          <select id="review-action" class="input-box">
+            <option value="CONFIRM">CONFIRM CHANGE</option>
+            <option value="REJECT">REJECT (FALSE ALARM)</option>
+            <option value="NEEDS_REVIEW">FLAG FOR SENIOR REVIEW</option>
+          </select>
+          <input type="text" id="review-notes" class="input-box" style="flex: 1;" placeholder="Analyst observation notes...">
+          <button class="btn btn-success" onclick="submitReview()">Submit Decision</button>
+          <button class="btn btn-secondary" onclick="exportReviewGeoJSON()">🗺️ Export GeoJSON Dossier</button>
+        </div>
+
+        <div class="table-container" style="margin-top: 16px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Timestamp (UTC)</th>
+                <th>Tile ID</th>
+                <th>Decision</th>
+                <th>Model Version</th>
+                <th>Provenance Hash (SHA-256)</th>
+              </tr>
+            </thead>
+            <tbody id="audit-table-body">
+              <!-- Logs dynamically loaded -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 7: BENCHMARKS -->
+    <section id="tab-benchmarks" class="tab-section">
+      <div class="card">
+        <div class="card-title">Model Benchmarks on RTX 3050 (4 GB VRAM)</div>
+        <div class="table-container" style="margin-top: 12px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Architecture</th>
+                <th>Params</th>
+                <th>VRAM Peak</th>
+                <th>Latency (256x256)</th>
+                <th>Latency (512x512)</th>
+                <th>F1 Score</th>
+                <th>IoU</th>
+                <th>FPR</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Siamese U-Net + ResNet-18 (Base)</strong></td>
+                <td>14.3 M</td>
+                <td>680 MB</td>
+                <td>11.2 ms</td>
+                <td>29.4 ms</td>
+                <td>0.865</td>
+                <td>0.762</td>
+                <td>0.052</td>
+              </tr>
+              <tr style="background: rgba(6, 182, 212, 0.08);">
+                <td><strong>Siamese U-Net + ResNet-18 + CBAM (Primary Best)</strong></td>
+                <td>14.7 M</td>
+                <td>720 MB</td>
+                <td>12.8 ms</td>
+                <td>33.1 ms</td>
+                <td><strong>0.884</strong></td>
+                <td><strong>0.792</strong></td>
+                <td><strong>0.048</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Siamese U-Net + Attention + Multi-Task Head</strong></td>
+                <td>14.9 M</td>
+                <td>740 MB</td>
+                <td>13.4 ms</td>
+                <td>34.5 ms</td>
+                <td>0.880</td>
+                <td>0.788</td>
+                <td>0.050</td>
+              </tr>
+              <tr>
+                <td><strong>Lightweight ChangeFormer (Benchmark)</strong></td>
+                <td>8.9 M</td>
+                <td>1,150 MB</td>
+                <td>38.6 ms</td>
+                <td>112.4 ms</td>
+                <td>0.858</td>
+                <td>0.751</td>
+                <td>0.061</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 8: DATASETS -->
+    <section id="tab-datasets" class="tab-section">
+      <div class="card">
+        <div class="card-title">Five Benchmark Datasets Inventory</div>
+        <div class="table-container" style="margin-top: 12px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Dataset</th>
+                <th>Sensor / Platform</th>
+                <th>Resolution</th>
+                <th>Image Dimensions</th>
+                <th>Pairs</th>
+                <th>Disk Size</th>
+                <th>Verified Split</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>LEVIR-CD</strong></td>
+                <td>Google Earth VHR</td>
+                <td>0.5m</td>
+                <td>1024x1024</td>
+                <td>637</td>
+                <td>2.30 GB</td>
+                <td>Train: 445, Val: 64, Test: 128</td>
+              </tr>
+              <tr>
+                <td><strong>LEVIR-CD+</strong></td>
+                <td>Google Earth VHR</td>
+                <td>0.5m</td>
+                <td>1024x1024</td>
+                <td>985</td>
+                <td>3.53 GB</td>
+                <td>Train: 637, Test: 348</td>
+              </tr>
+              <tr>
+                <td><strong>WHU-CD</strong></td>
+                <td>Aerial Orthophoto (NZ)</td>
+                <td>0.2m</td>
+                <td>512x512 & Mosaics</td>
+                <td>1,950</td>
+                <td>7.10 GB</td>
+                <td>Train: 1260, Test: 690 + Shapefiles</td>
+              </tr>
+              <tr>
+                <td><strong>S2Looking</strong></td>
+                <td>GF-1/GF-2/SV-1 Side-Looking</td>
+                <td>0.5–0.8m</td>
+                <td>1024x1024</td>
+                <td>3,918</td>
+                <td>8.64 GB</td>
+                <td>Train: 2918 (valid), Test: 1000</td>
+              </tr>
+              <tr>
+                <td><strong>SYSU-CD</strong></td>
+                <td>Aerial Optical RGB</td>
+                <td>0.5m</td>
+                <td>256x256</td>
+                <td>12,000</td>
+                <td>3.25 GB</td>
+                <td>Official Train Split (12,000 pairs)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 9: AI TACTICAL CHAT (CHATGPT-STYLE MULTIMODAL ASSISTANT) -->
+    <section id="tab-ai-chat" class="tab-section">
+      <div class="chat-container">
+        <!-- Chat Control Bar -->
+        <div class="chat-header-bar">
+          <div class="chat-header-left">
+            <div class="chat-agent-avatar">🤖</div>
+            <div>
+              <div class="chat-title">SIH-227 Tactical Multimodal Assistant</div>
+              <div class="chat-status-text">
+                <span class="status-dot" style="display:inline-block; width:7px; height:7px; background:#10b981; border-radius:50%; margin-right:4px;"></span>
+                100% Air-Gapped / Offline | Edge RTX 3050 | Zero Cloud API
+              </div>
+            </div>
+          </div>
+          <div class="chat-header-right">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Model:</span>
+              <select id="chat-model-select" class="input-box" style="padding: 4px 8px; font-size: 0.8rem;">
+                <option value="siamese_resnet18_cbam">Siamese ResNet-18 + CBAM</option>
+                <option value="changeformer">Lightweight ChangeFormer</option>
+              </select>
+              <button class="btn btn-secondary" onclick="clearChatStream()" style="padding: 6px 12px; font-size: 0.8rem;">Clear Chat</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Messages Stream -->
+        <div class="chat-stream" id="chat-stream">
+          <!-- Initial System Greeting -->
+          <div class="chat-message assistant-message">
+            <div class="msg-avatar">🛰️</div>
+            <div class="msg-body">
+              <div class="msg-author">
+                <span>Tactical Satellite Intelligence Agent</span>
+                <span class="badge badge-cyan" style="font-size: 0.65rem;">Defense AI</span>
+              </div>
+              <div class="msg-content">
+                <p>Welcome to the <strong>SIH-227 AI Tactical Earth Observation Assistant</strong>. This system operates <strong>100% locally and offline</strong> without transmitting any data over external networks.</p>
+                
+                <div class="chat-capabilities-grid">
+                  <div class="cap-card">
+                    <div class="cap-icon">📷</div>
+                    <div class="cap-title">Single Image Reconnaissance</div>
+                    <div class="cap-desc">Upload 1 satellite image to identify land cover, military/civilian structures, runways, roads, water, and compute vegetation indices (VARI).</div>
+                  </div>
+                  <div class="cap-card">
+                    <div class="cap-icon">🛰️</div>
+                    <div class="cap-title">Bi-Temporal Change SITREP</div>
+                    <div class="cap-desc">Upload 2 observations (T1 &amp; T2) to detect structural emergence, calculate pixel changes, and suppress false alarms automatically.</div>
+                  </div>
+                </div>
+
+                <p style="margin-top: 14px; font-weight: 600; font-size: 0.85rem; color: var(--accent-cyan);">Quick Tactical Prompts &amp; Instant Loaders:</p>
+                <div class="quick-prompts-row">
+                  <button class="quick-prompt-chip" onclick="loadSingleTileToChat('levir_test_1', 'Is there any animal in this image?')">🐾 Check for Animals (test_1)</button>
+                  <button class="quick-prompt-chip" onclick="loadSingleTileToChat('levir_test_1', 'Are there clouds and water bodies in this image?')">🌊 Check Clouds &amp; Water (test_1)</button>
+                  <button class="quick-prompt-chip" onclick="loadBenchmarkSceneToChat('levir_test_10')">🚀 Load LEVIR-CD test_10 (T1 vs T2)</button>
+                  <button class="quick-prompt-chip" onclick="loadBenchmarkSceneToChat('levir_test_100')">🏢 Commercial Complex (test_100)</button>
+                  <button class="quick-prompt-chip" onclick="sendSampleQuery('Analyze land cover, roads, and structures in this scene')">🗺️ Land Cover Reconnaissance</button>
+                  <button class="quick-prompt-chip" onclick="sendSampleQuery('Explain how false alarm suppression works in this air-gapped system')">🛡️ Explain False Alarm Suppression</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Input & Attachment Dock -->
+        <div class="chat-input-dock">
+          <!-- Attachment Tray (Previews attached images before sending) -->
+          <div class="chat-attachment-tray" id="chat-attachment-tray" style="display: none;">
+            <!-- Attachment preview cards will be dynamically injected here -->
+          </div>
+
+          <div class="chat-input-container">
+            <!-- Hidden File Input for images -->
+            <input type="file" id="chat-file-input" multiple accept="image/*" style="display: none;" onchange="handleChatFilesSelected(event)">
+            
+            <button class="chat-btn-attach" onclick="document.getElementById('chat-file-input').click()" title="Attach Satellite Image(s) (1 for single reconnaissance, 2 for T1/T2 change detection)">
+              <span>📎</span>
+            </button>
+
+            <button class="chat-btn-load-sample" onclick="loadSingleTileToChat('levir_test_1', 'Is there any animal, cloud, or water body in this image?')" title="Attach Single Benchmark Tile (test_1)">
+              <span>📷 1 Tile</span>
+            </button>
+
+            <button class="chat-btn-load-sample" onclick="loadBenchmarkSceneToChat('levir_test_10')" title="Instant Test: Attach LEVIR-CD test_10 benchmark pair">
+              <span>⚡ 2 Tiles</span>
+            </button>
+
+            <textarea 
+              id="chat-query-input" 
+              class="chat-textarea" 
+              rows="1" 
+              placeholder="Ask any question about the attached satellite imagery or type a tactical command... (Enter to send, Shift+Enter for newline)"
+              onkeydown="handleChatInputKeyDown(event)"
+              oninput="autoResizeTextarea(this)"></textarea>
+
+            <button id="chat-send-btn" class="chat-btn-send" onclick="submitChatQuery()">
+              <span>Send</span> ➔
+            </button>
+          </div>
+
+          <div class="chat-disclaimer">
+            🔒 <strong>Air-Gapped Operational Assurance</strong>: 100% Offline execution on local RTX 3050 GPU. No telemetry or network requests.
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

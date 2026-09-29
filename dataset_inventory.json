@@ -1,0 +1,221 @@
+{
+    "project": "SIH-227: Semantic Retrieval and Multi-Temporal Change Analysis of Satellite Imagery",
+    "hardware_target": {
+        "cpu": "Intel Core i5-12450H",
+        "ram_gb": 16,
+        "gpu": "NVIDIA GeForce RTX 3050 Laptop GPU (4 GB VRAM)",
+        "cuda_version": "12.9 (Driver 577.05)"
+    },
+    "datasets": {
+        "LEVIR-CD": {
+            "canonical_name": "LEVIR-CD (LEVIR Building Change Detection Dataset)",
+            "relative_path": "datasets/LEVIR CD",
+            "citation": "Chen, H., & Shi, Z. (2020). A Spatial-Temporal Attention-Based Method and a New Dataset for Remote Sensing Image Change Detection. Remote Sensing.",
+            "sensor": "Google Earth VHR Optical Sensors",
+            "spatial_resolution": "0.5 m/pixel",
+            "image_dimensions": [
+                1024,
+                1024
+            ],
+            "channels": 3,
+            "data_type": "uint8 (8-bit per channel)",
+            "file_format": "PNG",
+            "ground_truth_available": true,
+            "mask_format": "Binary PNG (0=unchanged, 255=change)",
+            "classes": [
+                "no_change",
+                "building_change"
+            ],
+            "crs": "WGS 84 / Pseudo-Mercator (Google Earth imagery)",
+            "temporal_span": "2002 - 2018 (Texas, USA)",
+            "disk_size_gb": 2.303,
+            "splits": {
+                "train": {
+                    "pairs": 445,
+                    "a_dir": "train/A",
+                    "b_dir": "train/B",
+                    "label_dir": "train/label"
+                },
+                "val": {
+                    "pairs": 64,
+                    "a_dir": "val/A",
+                    "b_dir": "val/B",
+                    "label_dir": "val/label"
+                },
+                "test": {
+                    "pairs": 128,
+                    "a_dir": "test/A",
+                    "b_dir": "test/B",
+                    "label_dir": "test/label"
+                }
+            },
+            "total_pairs": 637,
+            "total_images": 1911,
+            "integrity_notes": "100% complete and fully verified."
+        },
+        "LEVIR-CD+": {
+            "canonical_name": "LEVIR-CD+ (LEVIR Change Detection Plus)",
+            "relative_path": "datasets/LEVIR-CD+/LEVIR-CD+",
+            "citation": "Chen et al., IEEE GRSS Data Fusion Contest (DFC21-CD) / Beihang University",
+            "sensor": "Google Earth VHR Optical Sensors",
+            "spatial_resolution": "0.5 m/pixel",
+            "image_dimensions": [
+                1024,
+                1024
+            ],
+            "channels": 3,
+            "data_type": "uint8 (8-bit per channel)",
+            "file_format": "PNG",
+            "ground_truth_available": true,
+            "mask_format": "Binary PNG (0=unchanged, 255=change)",
+            "classes": [
+                "no_change",
+                "building_change"
+            ],
+            "crs": "WGS 84 / Pseudo-Mercator",
+            "temporal_span": "2002 - 2018 (Expanded US metropolitan & suburban regions)",
+            "disk_size_gb": 3.529,
+            "splits": {
+                "train": {
+                    "pairs": 637,
+                    "a_dir": "train/A",
+                    "b_dir": "train/B",
+                    "label_dir": "train/label"
+                },
+                "test": {
+                    "pairs": 348,
+                    "a_dir": "test/A",
+                    "b_dir": "test/B",
+                    "label_dir": "test/label"
+                }
+            },
+            "total_pairs": 985,
+            "total_images": 2955,
+            "integrity_notes": "Contains macOS archive metadata (__MACOSX, .DS_Store) filtered out by adapter."
+        },
+        "WHU-CD": {
+            "canonical_name": "WHU Building Dataset (WHU Building Change Detection Dataset)",
+            "relative_path": "datasets/Building change detection dataset_add",
+            "citation": "Ji, S., Wei, S., & Lu, M. (2019). Fully Convolutional Networks for Multisource Building Extraction From An Open Aerial and Satellite Imagery Dataset. IEEE TGRS.",
+            "sensor": "Aerial Orthophoto Cameras",
+            "spatial_resolution": "0.2 m / 0.075 m downsampled to ~0.2m",
+            "image_dimensions": [
+                512,
+                512
+            ],
+            "channels": 3,
+            "data_type": "uint8 (8-bit per channel)",
+            "file_format": "GeoTIFF (.tif) with ESRI Shapefiles (.shp, .dbf, .shx)",
+            "ground_truth_available": true,
+            "mask_format": "Binary GeoTIFF raster + Vector Shapefile polygons",
+            "classes": [
+                "no_change",
+                "building_change"
+            ],
+            "crs": "NZGD_2000_New_Zealand_Transverse_Mercator (EPSG:2193)",
+            "temporal_span": "2012 (post-earthquake) & 2016 (reconstruction), Christchurch, NZ",
+            "disk_size_gb": 7.102,
+            "splits": {
+                "train": {
+                    "tiles": 1260,
+                    "splited_dir": "1. The two-period image data/2012/splited_images/train"
+                },
+                "test": {
+                    "tiles": 690,
+                    "splited_dir": "1. The two-period image data/2012/splited_images/test"
+                },
+                "whole_scenes": {
+                    "train_scenes": 5,
+                    "test_scenes": 5
+                }
+            },
+            "total_pairs": 1950,
+            "total_images": 7810,
+            "integrity_notes": "Includes both full mosaics (whole_image) and 512x512 tiles (splited_images)."
+        },
+        "S2Looking": {
+            "canonical_name": "S2Looking: A Satellite Side-Looking Dataset for Building Change Detection",
+            "relative_path": "datasets/S2Looking/S2Looking",
+            "citation": "Shen, L., Chen, L., Zhang, Y., Hao, S., & Xiong, Z. (2021). S2Looking: A Satellite Side-Looking Dataset for Building Change Detection. IEEE TPAMI / Remote Sensing.",
+            "sensor": "GaoFen-1, GaoFen-2, SuperView-1, BeiJing-2 (VHR side-looking satellites)",
+            "spatial_resolution": "0.5 - 0.8 m/pixel",
+            "image_dimensions": [
+                1024,
+                1024
+            ],
+            "channels": 3,
+            "data_type": "uint8 (8-bit per channel)",
+            "file_format": "PNG",
+            "ground_truth_available": true,
+            "mask_format": "Multi-mask PNG (label=overall change, label1=new construction, label2=demolition)",
+            "classes": [
+                "no_change",
+                "new_building",
+                "demolished_building"
+            ],
+            "crs": "WGS 84",
+            "temporal_span": "Multi-temporal acquisitions globally (2017 - 2020)",
+            "disk_size_gb": 8.637,
+            "splits": {
+                "train": {
+                    "pairs": 2918,
+                    "image1_dir": "train/Image1",
+                    "image2_dir": "train/Image2",
+                    "label_dir": "train/label",
+                    "label1_dir": "train/label1"
+                },
+                "test": {
+                    "pairs": 1000,
+                    "image1_dir": "test/Image1",
+                    "image2_dir": "test/Image2",
+                    "label_dir": "test/label",
+                    "label1_dir": "test/label1",
+                    "label2_dir": "test/label2"
+                }
+            },
+            "total_pairs": 3918,
+            "total_images": 18418,
+            "integrity_notes": "Test split is 100% complete (1000 pairs). Train split has 2,918 intersecting pairs (582 files missing in Image2), handled dynamically by adapter."
+        },
+        "SYSU-CD": {
+            "canonical_name": "SYSU-CD (Sun Yat-sen University Change Detection Dataset - Training Split)",
+            "relative_path": "datasets/train",
+            "citation": "Shi, C., Zhang, Z., Zhang, C., et al. (2021). A deeply supervised attention metric-based network and an open aerial image dataset for remote sensing change detection. IEEE TGRS.",
+            "sensor": "High-altitude Aerial Optical RGB Sensors",
+            "spatial_resolution": "0.5 m/pixel",
+            "image_dimensions": [
+                256,
+                256
+            ],
+            "channels": 3,
+            "data_type": "uint8 (8-bit per channel)",
+            "file_format": "PNG",
+            "ground_truth_available": true,
+            "mask_format": "Binary PNG (0=unchanged, 255=change)",
+            "classes": [
+                "no_change",
+                "change (urban, vegetation, road, expansion)"
+            ],
+            "crs": "Projected local orthophoto coordinates",
+            "temporal_span": "Bi-temporal aerial acquisitions (2007 - 2014, Hong Kong/Guangdong)",
+            "disk_size_gb": 3.247,
+            "splits": {
+                "train": {
+                    "pairs": 12000,
+                    "t1_dir": "time1",
+                    "t2_dir": "time2",
+                    "label_dir": "label"
+                }
+            },
+            "total_pairs": 12000,
+            "total_images": 36000,
+            "integrity_notes": "Official 12,000 patch training set of SYSU-CD. Tiled at 256x256."
+        }
+    },
+    "aggregate_statistics": {
+        "total_datasets": 5,
+        "total_image_pairs": 19490,
+        "total_image_files": 66794,
+        "total_storage_gb": 24.818
+    }
+}

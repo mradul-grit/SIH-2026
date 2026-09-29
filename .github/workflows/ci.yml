@@ -1,21 +1,40 @@
 name: CI
 
 on:
-  pull_request:
   push:
-    branches: [develop, main]
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  lint-and-test:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - name: Install
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install CPU-only dependencies
         run: |
-          python -m pip install --upgrade pip
+          pip install --upgrade pip
+          pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
           pip install -r requirements.txt
-      - name: Tests
-        run: pytest -q
+          pip install pytest httpx
+
+      - name: Run smoke tests (CPU)
+        env:
+          PROJECT_ROOT: ${{ github.workspace }}
+        run: pytest tests/test_smoke.py -v --tb=short
+
+      - name: Run endpoint integration tests (CPU)
+        env:
+          PROJECT_ROOT: ${{ github.workspace }}
+        run: pytest tests/test_endpoints.py -v --tb=short

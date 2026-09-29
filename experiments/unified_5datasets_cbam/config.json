@@ -1,0 +1,19 @@
+{
+    "model": "Siamese U-Net + ResNet-18 + CBAM Attention",
+    "datasets": [
+        "LEVIR-CD",
+        "LEVIR-CD+",
+        "WHU-CD",
+        "S2Looking",
+        "SYSU-CD"
+    ],
+    "total_data_gb": 24.82,
+    "patch_size": 256,
+    "batch_size": 2,
+    "grad_accum_steps": 4,
+    "lr": 0.0001,
+    "epochs": 10,
+    "amp": true,
+    "sampling": "Balanced Multi-Dataset",
+    "hardware": "NVIDIA GeForce RTX 3050 Laptop GPU (4 GB VRAM)"
+}

@@ -1,0 +1,151 @@
+{
+    "project": "SIH-227: Satellite Change Detection & Semantic Retrieval",
+    "datasets": {
+        "LEVIR-CD": {
+            "splits": {
+                "train": {
+                    "count": 445,
+                    "sample_ids": [
+                        "train_1.png",
+                        "train_10.png",
+                        "train_100.png",
+                        "train_101.png",
+                        "train_102.png"
+                    ]
+                },
+                "val": {
+                    "count": 64,
+                    "sample_ids": [
+                        "val_1.png",
+                        "val_10.png",
+                        "val_11.png",
+                        "val_12.png",
+                        "val_13.png"
+                    ]
+                },
+                "test": {
+                    "count": 128,
+                    "sample_ids": [
+                        "test_1.png",
+                        "test_10.png",
+                        "test_100.png",
+                        "test_101.png",
+                        "test_102.png"
+                    ]
+                }
+            },
+            "total_pairs": 637
+        },
+        "LEVIR-CD+": {
+            "splits": {
+                "train": {
+                    "count": 637,
+                    "sample_ids": [
+                        "train_1.png",
+                        "train_10.png",
+                        "train_100.png",
+                        "train_101.png",
+                        "train_102.png"
+                    ]
+                },
+                "test": {
+                    "count": 348,
+                    "sample_ids": [
+                        "train_638.png",
+                        "train_639.png",
+                        "train_640.png",
+                        "train_641.png",
+                        "train_642.png"
+                    ]
+                }
+            },
+            "total_pairs": 985
+        },
+        "WHU-CD": {
+            "splits": {
+                "train": {
+                    "count": 1260,
+                    "sample_ids": [
+                        "0_0.tif",
+                        "0_1.tif",
+                        "0_10.tif",
+                        "0_100.tif",
+                        "0_1000.tif"
+                    ]
+                },
+                "test": {
+                    "count": 690,
+                    "sample_ids": [
+                        "0_0.tif",
+                        "0_1.tif",
+                        "0_10.tif",
+                        "0_100.tif",
+                        "0_101.tif"
+                    ]
+                }
+            },
+            "total_pairs": 1950
+        },
+        "S2Looking": {
+            "splits": {
+                "train": {
+                    "count": 2918,
+                    "sample_ids": [
+                        "10.png",
+                        "100.png",
+                        "1004.png",
+                        "1005.png",
+                        "1009.png"
+                    ]
+                },
+                "test": {
+                    "count": 1000,
+                    "sample_ids": [
+                        "1008.png",
+                        "1011.png",
+                        "1021.png",
+                        "1023.png",
+                        "1029.png"
+                    ]
+                }
+            },
+            "total_pairs": 3918
+        },
+        "SYSU-CD": {
+            "splits": {
+                "train": {
+                    "count": 8400,
+                    "sample_ids": [
+                        "00000.png",
+                        "00001.png",
+                        "00002.png",
+                        "00003.png",
+                        "00004.png"
+                    ]
+                },
+                "val": {
+                    "count": 1800,
+                    "sample_ids": [
+                        "08400.png",
+                        "08401.png",
+                        "08402.png",
+                        "08403.png",
+                        "08404.png"
+                    ]
+                },
+                "test": {
+                    "count": 1800,
+                    "sample_ids": [
+                        "10200.png",
+                        "10201.png",
+                        "10202.png",
+                        "10203.png",
+                        "10204.png"
+                    ]
+                }
+            },
+            "total_pairs": 12000
+        }
+    },
+    "aggregate_valid_pairs": 19490
+}

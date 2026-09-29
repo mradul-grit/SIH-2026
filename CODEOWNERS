@@ -1,7 +1,27 @@
-# Put the actual GitHub usernames here before enabling CODEOWNERS rules.
-# Example:
-# /src/data/ @member2
-# /src/embeddings/ @member3
-# /src/change_detection/ @member4
-# /backend/ @member5
-# /frontend/ @member6
+# CODEOWNERS
+# This file maps directories to the team members responsible for code review.
+
+# Default: both team leads must approve anything that doesn't match below.
+*                   @mradul-grit
+
+# ML core — models, training, evaluation
+/project_code/models/          @mradul-grit
+/project_code/training/        @mradul-grit
+/project_code/evaluation/      @mradul-grit
+/project_code/false_alarm/     @mradul-grit
+/project_code/retrieval/       @mradul-grit
+/project_code/temporal/        @mradul-grit
+/project_code/clustering/      @mradul-grit
+
+# Backend API, ingestion, provenance
+/project_code/api/             @mradul-grit
+/project_code/ingestion/       @mradul-grit
+/project_code/provenance/      @mradul-grit
+/backend/                      @mradul-grit
+
+# Frontend
+/frontend/                     @mradul-grit
+
+# Documentation
+/docs/                         @mradul-grit
+/README.md                     @mradul-grit

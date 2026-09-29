@@ -1,334 +1,303 @@
-# Semantic Retrieval & Multi-Temporal Change Analysis of Satellite Imagery
+# SIH-26227 — Semantic Retrieval & Multi-Temporal Change Analysis of Satellite Imagery
 
-> An offline, provenance-aware AI/ML system for semantic satellite-image retrieval, image-to-image similarity search, and multi-temporal change analysis.
+<p align="left">
+  <img src="https://img.shields.io/badge/Status-Active-brightgreen" />
+  <img src="https://img.shields.io/badge/SIH_Problem_ID-26227-blue" />
+  <img src="https://img.shields.io/badge/Ministry-Ministry_of_Defence-red" />
+  <img src="https://img.shields.io/badge/Department-Indian_Army_(DGIS)-orange" />
+  <img src="https://img.shields.io/badge/Category-Software-lightgrey" />
+  <img src="https://img.shields.io/badge/Theme-Space_Technology-purple" />
+  <img src="https://img.shields.io/badge/Python-3.11+-blue" />
+  <img src="https://img.shields.io/badge/PyTorch-2.2+-red" />
+</p>
 
-**SIH Problem ID:** 26227  
-**Organization:** Ministry of Defence (MoD)  
-**Department:** Indian Army (DGIS)  
-**Category:** Software  
-**Theme:** Space Technology
+**Organisation:** Ministry of Defence (MoD) · Indian Army — Directorate General of Information Systems (DGIS)  
+**Problem Statement ID:** 26227  
+**Category:** Software · Space Technology
 
 ---
 
-## 1. Problem
+## Problem Statement
 
-Earth-observation archives are increasingly multi-temporal, multi-spectral and multi-sensor. Traditional catalogues mainly search by metadata such as coordinates, acquisition date, platform and product type. Analysts still need to know where and when to look before inspecting imagery.
+Earth-observation archives grow continuously — multi-temporal, multi-spectral, and multi-sensor. Traditional catalogues let analysts filter only by metadata: coordinates, acquisition date, platform, product type. Analysts must still know *where* and *when* to look before they can inspect anything.
 
-This project aims to make satellite imagery queryable by **meaning and change over time**, while retaining spatial, temporal and sensor filtering.
+**The gap:** satellite imagery is not yet queryable by *meaning* and *change over time*.
 
-The system must operate locally/on-premises and preserve geospatial provenance.
+This system closes that gap. It makes archived satellite imagery semantically searchable by natural language and detects physically meaningful change between acquisitions — all while preserving geospatial provenance and running fully offline.
 
-## 2. Proposed Solution
+---
 
-The prototype will combine:
+## Solution Overview
 
-1. **Semantic retrieval** — natural-language search over satellite-image tiles.
-2. **Image-to-image retrieval** — find visually/semantically similar locations.
-3. **Multi-temporal change analysis** — identify meaningful appearance, disappearance, expansion and contraction.
-4. **False-alarm suppression** — handle clouds, haze, seasonality, illumination, view angle and registration differences.
-5. **Discovery & clustering** — group similar sites using embeddings.
-6. **Analyst workflow & provenance** — ranked review queue with before/after evidence and processing history.
-7. **Incremental ingestion** — add new GeoTIFF/COG imagery without rebuilding the entire index.
-8. **Offline operation** — approved models, libraries and datasets staged locally; no external APIs during evaluation.
+SIH-26227 is an end-to-end, air-gapped Earth Observation intelligence platform that unifies:
 
-## 3. MVP
+| Capability | Mechanism |
+| :--- | :--- |
+| **Semantic NL Retrieval** | RemoteCLIP 512-dim vision-language embeddings + Qdrant local vector search |
+| **Bi-Temporal Change Detection** | Siamese U-Net / ResNet-18 + CBAM attention — native 1024×1024 resolution |
+| **False-Alarm Suppression** | Phase-correlation registration, cloud masking, VARI vegetation filter, morphological cleaning |
+| **Multi-Temporal Tracking** | $O(\log N)$ bisection search — pinpoints exact change onset timestamp |
+| **Analyst Workflow & Provenance** | SHA-256 hash-chained audit log + RFC 7946 GeoJSON export |
+| **Discovery Clustering** | UMAP + HDBSCAN — surfaces uncataloged change patterns without supervision |
+| **Active Learning Feedback** | Rocchio relevance vector shift on analyst Confirm/Reject decisions |
+| **Offline Air-Gapped Operation** | Zero external APIs. All models, embeddings, and vector indices run locally |
 
-### Must Have
-- GeoTIFF/COG ingestion
-- Metadata preservation
-- Tile generation/indexing
-- Text → image semantic retrieval
-- Image → image similarity retrieval
-- Before/after change detection for a selected AOI
-- Confidence/quality handling
-- Map/result interface
-- Provenance for every result
-- Offline inference
-- Reproducible evaluation
+---
 
-### Stretch Goals
-- Site clustering
-- Analyst feedback → reranking
-- Multi-sensor fusion
-- Advanced change-type classification
-- Incremental index update benchmark
+## Benchmark Results
 
-## 4. Architecture
+Evaluation on **19,490 image pairs** across 5 satellite benchmarks:
 
-```text
-                     ANALYST
-                        |
-                        v
-                +----------------+
-                | Web Interface  |
-                +----------------+
-                        |
-                        v
-                +----------------+
-                | Search / API   |
-                +----------------+
-                  /      |       \
-                 /       |        \
-                v        v         v
-          Semantic   Change     Metadata
-          Retrieval  Analysis    Filters
-              |         |          |
-              +---------+----------+
-                        |
-                        v
-              +--------------------+
-              | Vector / Geo Index |
-              +--------------------+
-                        |
-                        v
-              +--------------------+
-              | EO Data & Metadata |
-              +--------------------+
+| Architecture | Training | F1 | IoU | Precision | Recall | FPR | Latency |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| Siamese ResNet-18 Baseline | LEVIR-CD only | 0.330 | 0.198 | 0.340 | 0.321 | 0.047 | 30.8 ms |
+| **Siamese ResNet-18 + CBAM** | **Unified 5-Dataset** | **0.884** | **0.792** | **0.908** | **0.862** | **0.048** | **34.9 ms** |
 
-Offline AI/ML:
-  imagery -> preprocessing -> embeddings -> vector index
-                       |
-                       +-> temporal pairs -> change model -> quality/confidence
-```
+Peak VRAM consumption: **720 MB** — leaving over 3 GB headroom on RTX 3050 4 GB.
 
-## 5. Repository Structure
+---
+
+## Hardware Target
+
+| Component | Specification |
+| :--- | :--- |
+| CPU | Intel Core i5-12450H |
+| RAM | 16 GB DDR4 |
+| GPU | NVIDIA GeForce RTX 3050 Laptop (4 GB VRAM) |
+| CUDA | 12.6+ |
+| OS | Linux (primary) / Windows 11 |
+
+---
+
+## Repository Structure
 
 ```text
-.
-├── README.md
-├── LICENSE
-├── .gitignore
-├── .env.example
-├── requirements.txt
-├── pyproject.toml
+SIH-2026/
+├── backend/                  # FastAPI backend service
+│   ├── app.py                # Production entrypoint
+│   └── README.md             # API documentation & endpoint reference
 │
-├── docs/
-│   ├── research/
-│   │   ├── problem-understanding.md
-│   │   ├── existing-solutions.md
-│   │   ├── ml-approaches.md
-│   │   ├── data.md
-│   │   ├── technical-feasibility.md
-│   │   └── product-and-mvp.md
-│   ├── architecture/
-│   │   ├── system-architecture.md
-│   │   ├── api-contract.md
-│   │   ├── data-contract.md
-│   │   └── decisions.md
-│   ├── experiments/
-│   │   └── experiment-log.md
-│   ├── evaluation/
-│   │   └── evaluation-plan.md
-│   └── meetings/
-│       └── day-01.md
-│
-├── src/
-│   ├── data/
-│   ├── preprocessing/
-│   ├── retrieval/
-│   ├── change_detection/
-│   ├── embeddings/
-│   ├── indexing/
-│   └── evaluation/
-│
-├── backend/
-├── frontend/
-├── tests/
-├── configs/
-├── scripts/
-├── data/
+├── data/                     # Dataset catalogs & metadata (no raw rasters committed)
+│   ├── dataset_inventory.json
+│   ├── dataset_manifest.json
+│   ├── dataset_report.md
 │   └── README.md
-├── models/
+│
+├── docs/                     # Technical documentation
+│   ├── architecture/         # System design, API & data contracts, ADR log
+│   ├── evaluation/           # Evaluation methodology & metrics plan
+│   ├── experiments/          # ML experiment log
+│   ├── meetings/             # Sprint meeting notes
+│   └── research/             # Domain research: datasets, ML approaches, EO literature
+│
+├── experiments/              # Experiment artefacts & model checkpoints
+│   ├── unified_5datasets_cbam/   # Primary model (61.8 MB, .pt gitignored)
+│   ├── levir_baseline/           # Baseline model (gitignored)
+│   ├── model_comparison_benchmark.json
+│   ├── practical_test_results.json
+│   └── results.csv
+│
+├── frontend/                 # React 19 + Vite GEOINT C2 Analyst Dashboard
+│   ├── src/
+│   │   ├── tabs/             # 9 operational workspaces (dashboard, chat, detection, ...)
+│   │   └── components/       # Header, Sidebar
+│   ├── server.js             # Production Node.js proxy
+│   ├── vite.config.js
 │   └── README.md
-└── .github/
-    ├── workflows/ci.yml
-    ├── ISSUE_TEMPLATE/feature.md
-    ├── ISSUE_TEMPLATE/research.md
-    └── PULL_REQUEST_TEMPLATE.md
+│
+├── models/                   # Model cards & threshold registry
+│   ├── best_threshold.json
+│   └── README.md
+│
+├── project_code/             # Core Python source package
+│   ├── api/                  # FastAPI app with all endpoints
+│   ├── models/               # Siamese ResNet-18 + CBAM, LightweightChangeFormer, losses
+│   ├── false_alarm/          # Phase correlation, cloud masking, VARI, morphology
+│   ├── retrieval/            # RemoteCLIP encoder, Qdrant indexer, 4-bit quantizer
+│   ├── temporal/             # Change timeline, O(log N) bisection search
+│   ├── clustering/           # UMAP + HDBSCAN discovery
+│   ├── provenance/           # SHA-256 audit logger
+│   ├── chat/                 # 100% offline multimodal tactical chat engine
+│   ├── training/             # Unified multi-dataset trainer + LEVIR baseline
+│   ├── evaluation/           # Metrics, benchmark runner, threshold optimizer
+│   ├── datasets/             # Dataset adapters and unified loader
+│   ├── ingestion/            # File-system scene watcher
+│   └── config.py             # Cross-platform dynamic path resolution
+│
+├── scripts/                  # Utility & diagnostic scripts
+│   ├── run_training.py       # Full training launcher
+│   ├── benchmark_models.py   # Head-to-head model comparison
+│   ├── run_practical_test.py # Practical accuracy evaluation
+│   ├── check_torch.py        # GPU/CUDA verification
+│   └── diagnostic_ground_truth.py
+│
+├── tests/                    # Automated test suite
+│   ├── test_smoke.py         # Import / sanity checks
+│   ├── test_endpoints.py     # Full 13-endpoint API integration test
+│   ├── test_dual_inference.py
+│   ├── test_tiling.py
+│   └── test_offline_chat.py
+│
+├── best_model.json           # Selected architecture + benchmark metrics
+├── .env.example              # Environment variable reference
+├── pyproject.toml            # Python project metadata
+├── requirements.txt          # Pinned production dependencies
+├── CONTRIBUTING.md           # Contribution guidelines
+├── CODEOWNERS                # Ownership & review routing
+└── LICENSE
 ```
 
-## 6. Team
+---
 
-| Member | Primary Ownership | Integration Responsibility |
-|---|---|---|
-| M1 | Tech Lead / Architecture | Contracts, integration, reviews |
-| M2 | Data / Geospatial Pipeline | Imagery, tiling, metadata |
-| M3 | ML / Embeddings | Semantic model, retrieval experiments |
-| M4 | Change Detection / ML | Temporal comparison, quality handling |
-| M5 | Backend / API | Search, inference, metadata APIs |
-| M6 | Frontend / DevOps / QA | UI, CI, testing, deployment |
+## Quickstart
 
-Roles can overlap, but every component has one accountable owner.
+### 1. Clone & Install
 
-## 7. Integration Contract
-
-The team will agree on interfaces before implementation.
-
-```text
-Frontend
-   |
-   | HTTP/JSON
-   v
-Backend API
-   |
-   | typed request
-   v
-Retrieval / Change services
-   |
-   | standard internal result
-   v
-Models + Vector Index
+```bash
+git clone https://github.com/mradul-grit/SIH-2026.git
+cd SIH-2026
+python -m venv .venv && source .venv/bin/activate   # Linux / macOS
+# .venv\Scripts\activate                             # Windows
+pip install -r requirements.txt
 ```
 
-Example retrieval result:
-
-```json
-{
-  "tile_id": "tile_001",
-  "score": 0.91,
-  "geometry": {},
-  "acquisition_time": "YYYY-MM-DDTHH:MM:SS",
-  "sensor": "Sentinel-2",
-  "source_scene": "scene_id",
-  "processing_version": "v0.1",
-  "confidence": 0.88
-}
+For CUDA 12.6 (recommended for RTX 3050):
+```bash
+pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu126
 ```
 
-The exact schema is maintained in `docs/architecture/api-contract.md`.
+### 2. Configure Environment
 
-## 8. Data Sources
-
-The supplied problem statement identifies:
-- Copernicus Sentinel-2 optical imagery
-- Sentinel-1 SAR
-- USGS Landsat Collection 2
-- NRSC/ISRO Bhuvan open Earth-observation data
-
-All datasets/models must have provenance and applicable licence information recorded before use.
-
-## 9. 25-Day Prototype Roadmap
-
-| Days | Goal | Exit Criteria |
-|---|---|---|
-| 1–2 | Research | Problem, gaps, data, models, risks documented |
-| 3 | MVP + architecture | Contracts and scope frozen |
-| 4–5 | Foundation | Repo, environments, data pipeline skeleton |
-| 6–7 | End-to-end skeleton | UI → API → mock model → result works |
-| 8–12 | Real ML | Real embeddings/change pipeline integrated |
-| 13–15 | Model/data improvement | Baseline + experiments + evaluation |
-| 16–18 | Full integration | Retrieval + change + provenance connected |
-| 19–21 | Product polish | UX, robustness, latency, errors |
-| 22–23 | Testing | Unit/integration/evaluation tests |
-| 24 | Freeze | Deployment, docs, demo data, presentation |
-| 25 | Final | Regression test + final demo rehearsal |
-
-## 10. Git Workflow
-
-```text
-main
-  ^
-  | release PR
-develop
-  ^
-  | PR + review + CI
-feature/*
+```bash
+cp .env.example .env
+# Edit PROJECT_ROOT if your datasets live on a separate drive
 ```
 
-Rules:
-- No direct pushes to `main`.
-- Every task gets an issue.
-- Every implementation gets a branch.
-- Every branch becomes a pull request.
-- At least one teammate reviews a PR.
-- CI must pass before merge.
-- Do not commit secrets, raw datasets or unnecessary model artifacts.
-- Keep contracts stable; changes to contracts require team agreement.
-- Merge small, focused PRs.
+### 3. Start the Backend API
 
-Recommended branch names:
-
-```text
-feature/data-ingestion
-feature/semantic-retrieval
-feature/change-detection
-feature/backend-api
-feature/frontend-map
-feature/evaluation
-fix/registration-error
-docs/research-update
+```bash
+python -m uvicorn backend.app:app --host 127.0.0.1 --port 8000
 ```
 
-## 11. Research Rule
+Interactive docs: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
-Every research finding should answer:
+### 4. Start the GEOINT Analyst Dashboard
 
-- What question were we investigating?
-- What did we find?
-- What is the source?
-- Why does it matter?
-- What decision does it support?
-- What is our confidence?
+```bash
+cd frontend
+node server.js     # Production: http://localhost:3000
+# or
+npm run dev        # Development HMR: http://localhost:5173
+```
 
-Research belongs in `docs/research/`, not as random links in chat.
+### 5. Run the Automated Test Suite
 
-## 12. ML Experiment Rule
+```bash
+pytest tests/ -v
+```
 
-Every meaningful experiment records:
+---
 
-- Experiment ID
-- Date
-- Dataset/version
-- Model
-- Parameters
-- Hardware
-- Metrics
-- Baseline comparison
-- Conclusion
-- Code commit
+## System Architecture
 
-See `docs/experiments/experiment-log.md`.
+```
+                            ANALYST
+                               │
+                     ┌─────────▼─────────┐
+                     │  React 19 GEOINT   │
+                     │  C2 Dashboard       │  (9 Operational Tabs)
+                     └─────────┬─────────┘
+                               │ HTTP/REST
+                     ┌─────────▼─────────┐
+                     │   FastAPI Backend  │  (13 Endpoints)
+                     └──┬──────┬──────┬──┘
+                        │      │      │
+          ┌─────────────┘      │      └─────────────┐
+          ▼                    ▼                     ▼
+  ┌───────────────┐   ┌────────────────┐   ┌──────────────────┐
+  │ Change        │   │ Semantic       │   │ Temporal         │
+  │ Detection     │   │ Retrieval      │   │ Bisection        │
+  │ Pipeline      │   │ Engine         │   │ Engine           │
+  └───────┬───────┘   └───────┬────────┘   └────────┬─────────┘
+          │                   │                      │
+  ┌───────▼───────┐   ┌───────▼────────┐   ┌────────▼─────────┐
+  │ Siamese       │   │ RemoteCLIP     │   │ Change Timeline  │
+  │ ResNet-18     │   │ Encoder        │   │ Builder          │
+  │ + CBAM        │   │ + Qdrant DB    │   │ O(log N)         │
+  └───────┬───────┘   └────────────────┘   └──────────────────┘
+          │
+  ┌───────▼───────┐
+  │ False-Alarm   │  ← Phase correlation, cloud masking,
+  │ Suppression   │    VARI filter, morphological cleaning
+  └───────┬───────┘
+          │
+  ┌───────▼───────┐
+  │ Provenance    │  ← SHA-256 audit chaining, GeoJSON export
+  │ Audit Logger  │
+  └───────────────┘
+```
 
-## 13. Evaluation
+---
 
-The problem statement calls for reproducible reporting of:
-- Indexed area
-- Number of scenes/tiles
-- Index build time
-- Storage footprint
-- Query latency
-- Hardware used
+## Core Modules
 
-Retrieval should be evaluated on held-out semantic queries and relevance judgements.
+### `project_code/models/` — Neural Architecture
 
-Change analysis should be evaluated on held-out labelled change/no-change cases.
+| File | Description |
+| :--- | :--- |
+| `siamese_resnet18.py` | Siamese U-Net with shared ResNet-18 encoder, multi-scale difference fusion, CBAM/SE attention, binary & semantic heads |
+| `lightweight_changeformer.py` | Transformer-based dual-stream change detection with cross-attention |
+| `attention_modules.py` | CBAM (Channel + Spatial Attention) and SEBlock implementations |
+| `losses.py` | Focal loss, Dice loss, and combined loss functions for class-imbalanced change masks |
 
-See `docs/evaluation/evaluation-plan.md`.
+### `project_code/false_alarm/` — Signal Integrity Pipeline
 
-## 14. Offline/Sovereignty Requirement
+| File | Description |
+| :--- | :--- |
+| `registration.py` | 2D phase-correlation sub-pixel co-registration validator |
+| `quality_mask.py` | Luminance histogram cloud & shadow masking |
+| `spectral_check.py` | VARI optical vegetation change filter (suppresses seasonal greening false alarms) |
+| `postprocess.py` | Morphological opening/closing, connected-component cleaning, hole-filling |
 
-The evaluation environment must work after network access is disabled, once approved models, libraries and datasets have been staged locally.
+### `project_code/retrieval/` — Multimodal Semantic Search
 
-Every pretrained model must record:
-- Origin
-- Licence
-- Version
-- Weight filename/checksum
-- Offline loading procedure
+| File | Description |
+| :--- | :--- |
+| `remoteclip_encoder.py` | Offline vision-language embedding (512-dim, ResNet-18 backbone, ImageNet-normalized) |
+| `qdrant_indexer.py` | Qdrant local vector store; falls back to in-memory store if `qdrant-client` not installed |
+| `quantizer_4bit.py` | 4-bit scalar quantization — 8× memory reduction for large tile catalogs |
+| `search_engine.py` | Cosine-similarity search with Rocchio active learning relevance feedback |
 
-## 15. Current Status
+### `project_code/temporal/` — Multi-Temporal Engine
 
-**Project phase:** Research / repository setup  
-**MVP:** To be frozen on Day 3  
-**Model:** TBD after research  
-**Dataset:** TBD after licence/availability verification  
-**Deployment:** TBD
+| File | Description |
+| :--- | :--- |
+| `temporal_sequence.py` | Chronological sequence analyzer across $N$ acquisitions |
+| `change_timeline.py` | Timeline narrative builder (no_change → construction_detected → expansion) + $O(\log N)$ bisection search |
 
-## 16. Documentation
+---
 
-- [Research](docs/research/problem-understanding.md)
-- [Architecture](docs/architecture/system-architecture.md)
-- [API Contract](docs/architecture/api-contract.md)
-- [Decision Log](docs/architecture/decisions.md)
-- [Experiment Log](docs/experiments/experiment-log.md)
-- [Evaluation Plan](docs/evaluation/evaluation-plan.md)
+## Environment Variables
+
+See [`.env.example`](.env.example) for all configurable keys:
+
+```bash
+PROJECT_ROOT=/path/to/SIH-2026    # Override auto-detected project root
+API_HOST=127.0.0.1                 # FastAPI bind address
+API_PORT=8000                      # FastAPI bind port
+```
+
+---
+
+## License
+
+[MIT License](LICENSE)
+
+---
+
+## Team
+
+| Name | Role |
+| :--- | :--- |
+| Mradul | Technical Lead, ML Architecture |
+| Mayank Soni | Backend & Infrastructure, System Integration |

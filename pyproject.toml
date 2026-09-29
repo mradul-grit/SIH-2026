@@ -1,12 +1,70 @@
 [build-system]
-requires = ["setuptools>=68"]
-build-backend = "setuptools.build_meta"
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
 
 [project]
-name = "semantic-satellite-search"
-version = "0.1.0"
-description = "Offline semantic retrieval and multi-temporal change analysis of satellite imagery"
-requires-python = ">=3.10"
+name = "sih-26227"
+version = "1.0.0"
+description = "Semantic Retrieval & Multi-Temporal Change Analysis of Satellite Imagery — SIH 2026 Problem ID 26227"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+keywords = [
+  "satellite", "remote-sensing", "change-detection",
+  "semantic-retrieval", "earth-observation", "geospatial",
+  "siamese-network", "attention", "defense", "geoint"
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Scientific/Engineering :: GIS",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: Microsoft :: Windows",
+]
+dependencies = [
+  "torch>=2.2.0",
+  "torchvision>=0.17.0",
+  "numpy>=1.24.0",
+  "scipy>=1.11.0",
+  "scikit-learn>=1.3.0",
+  "pillow>=10.0.0",
+  "fastapi>=0.110.0",
+  "uvicorn>=0.28.0",
+  "pydantic>=2.6.0",
+  "python-multipart>=0.0.9",
+  "qdrant-client>=1.8.0",
+  "tqdm>=4.66.0",
+  "matplotlib>=3.8.0",
+  "requests>=2.31.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0", "httpx>=0.27.0", "ruff>=0.4.0"]
+cuda = ["torch>=2.2.0+cu126", "torchvision>=0.17.0+cu126"]
+
+[project.scripts]
+sih-serve = "backend.app:app"
+
+[tool.setuptools.packages.find]
+include = ["project_code*", "backend*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]
+
+[tool.ruff.per-file-ignores]
+"tests/*" = ["F401"]
