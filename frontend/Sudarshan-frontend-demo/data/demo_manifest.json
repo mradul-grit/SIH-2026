@@ -1,0 +1,30 @@
+{
+  "mode": "DEMO",
+  "description": "Minimal local imagery pack specification for the Sudarshan UI demo. Populate only with verified public or organiser-approved imagery.",
+  "target_total_items": 32,
+  "collections": [
+    {"id": "SITE-A", "target_items": 10, "purpose": "construction change near river"},
+    {"id": "SITE-B", "target_items": 7, "purpose": "similar-site discovery"},
+    {"id": "SITE-C", "target_items": 7, "purpose": "seasonal/no-change control"},
+    {"id": "SITE-D", "target_items": 6, "purpose": "quality/false-alarm control"},
+    {"id": "SECONDARY", "target_items": 2, "purpose": "optional secondary-query control"}
+  ],
+  "required_metadata": [
+    "asset_id",
+    "source_scene_id",
+    "acquisition_datetime",
+    "sensor",
+    "product_type",
+    "bounds",
+    "crs",
+    "resolution",
+    "quality",
+    "source_reference",
+    "license",
+    "local_path",
+    "sha256"
+  ],
+  "query_1": "newly built structures near a river",
+  "query_2": "large vehicle concentrations on open ground",
+  "items": []
+}
